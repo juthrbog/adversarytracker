@@ -1,0 +1,68 @@
+{{define "layout"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daggerheart Adversary Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script src="https://unpkg.com/alpinejs@3.13.0/dist/cdn.min.js" defer></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dh-red': '#8B0000',
+                        'dh-gold': '#D4AF37',
+                        'dh-brown': '#654321',
+                        'dh-parchment': '#F5F5DC',
+                        'dh-dark': '#2D2B27'
+                    },
+                    fontFamily: {
+                        'medieval': ['Cinzel', 'serif'],
+                        'script': ['Tangerine', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Tangerine:wght@400;700&display=swap');
+        
+        body {
+            background-color: #F5F5DC;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjZjVmNWRjIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNlNmU2Y2UiPjwvcmVjdD4KPC9zdmc+');
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="bg-dh-dark text-dh-gold border-b-4 border-dh-gold">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-medieval font-bold">Daggerheart Adversary Tracker</h1>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="/adversaries" class="hover:text-white transition-colors">Adversaries</a></li>
+                        <li><a href="/encounters" class="hover:text-white transition-colors">Encounters</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        {{block "content" .}}{{end}}
+    </main>
+
+    <footer class="bg-dh-dark text-dh-gold mt-auto border-t-4 border-dh-gold">
+        <div class="container mx-auto px-4 py-4">
+            <div class="text-center">
+                <p>&copy; 2025 Daggerheart Adversary Tracker</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+{{end}}

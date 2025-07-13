@@ -1,0 +1,211 @@
+{{define "content"}}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <a href="/adversaries" class="text-dh-red hover:text-red-800 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Back to Adversaries
+        </a>
+    </div>
+
+    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg border-2 border-dh-brown overflow-hidden">
+        <div class="bg-dh-dark text-dh-gold p-6 border-b-4 border-dh-gold">
+            <h2 class="text-3xl font-medieval font-bold">
+                {{if .IsNew}}Create New Adversary{{else}}Edit Adversary{{end}}
+            </h2>
+        </div>
+
+        <div class="p-6">
+            <form 
+                action="{{if .IsNew}}/adversaries{{else}}/adversaries/{{.Adversary.ID}}{{end}}" 
+                method="POST"
+                class="space-y-6">
+                
+                <!-- Basic Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input type="text" id="name" name="name" value="{{.Adversary.Name}}" 
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                            required>
+                    </div>
+                    <div>
+                        <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                        <select id="type" name="type" 
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                            required>
+                            <option value="" {{if eq .Adversary.Type ""}}selected{{end}}>Select Type</option>
+                            <option value="Aberration" {{if eq .Adversary.Type "Aberration"}}selected{{end}}>Aberration</option>
+                            <option value="Beast" {{if eq .Adversary.Type "Beast"}}selected{{end}}>Beast</option>
+                            <option value="Celestial" {{if eq .Adversary.Type "Celestial"}}selected{{end}}>Celestial</option>
+                            <option value="Construct" {{if eq .Adversary.Type "Construct"}}selected{{end}}>Construct</option>
+                            <option value="Dragon" {{if eq .Adversary.Type "Dragon"}}selected{{end}}>Dragon</option>
+                            <option value="Elemental" {{if eq .Adversary.Type "Elemental"}}selected{{end}}>Elemental</option>
+                            <option value="Fey" {{if eq .Adversary.Type "Fey"}}selected{{end}}>Fey</option>
+                            <option value="Fiend" {{if eq .Adversary.Type "Fiend"}}selected{{end}}>Fiend</option>
+                            <option value="Giant" {{if eq .Adversary.Type "Giant"}}selected{{end}}>Giant</option>
+                            <option value="Humanoid" {{if eq .Adversary.Type "Humanoid"}}selected{{end}}>Humanoid</option>
+                            <option value="Monstrosity" {{if eq .Adversary.Type "Monstrosity"}}selected{{end}}>Monstrosity</option>
+                            <option value="Ooze" {{if eq .Adversary.Type "Ooze"}}selected{{end}}>Ooze</option>
+                            <option value="Plant" {{if eq .Adversary.Type "Plant"}}selected{{end}}>Plant</option>
+                            <option value="Undead" {{if eq .Adversary.Type "Undead"}}selected{{end}}>Undead</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="challenge_rating" class="block text-sm font-medium text-gray-700 mb-1">Challenge Rating</label>
+                        <select id="challenge_rating" name="challenge_rating" 
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                            required>
+                            <option value="" {{if eq .Adversary.ChallengeRating ""}}selected{{end}}>Select CR</option>
+                            <option value="0" {{if eq .Adversary.ChallengeRating "0"}}selected{{end}}>0</option>
+                            <option value="1/8" {{if eq .Adversary.ChallengeRating "1/8"}}selected{{end}}>1/8</option>
+                            <option value="1/4" {{if eq .Adversary.ChallengeRating "1/4"}}selected{{end}}>1/4</option>
+                            <option value="1/2" {{if eq .Adversary.ChallengeRating "1/2"}}selected{{end}}>1/2</option>
+                            <option value="1" {{if eq .Adversary.ChallengeRating "1"}}selected{{end}}>1</option>
+                            <option value="2" {{if eq .Adversary.ChallengeRating "2"}}selected{{end}}>2</option>
+                            <option value="3" {{if eq .Adversary.ChallengeRating "3"}}selected{{end}}>3</option>
+                            <option value="4" {{if eq .Adversary.ChallengeRating "4"}}selected{{end}}>4</option>
+                            <option value="5" {{if eq .Adversary.ChallengeRating "5"}}selected{{end}}>5</option>
+                            <option value="6" {{if eq .Adversary.ChallengeRating "6"}}selected{{end}}>6</option>
+                            <option value="7" {{if eq .Adversary.ChallengeRating "7"}}selected{{end}}>7</option>
+                            <option value="8" {{if eq .Adversary.ChallengeRating "8"}}selected{{end}}>8</option>
+                            <option value="9" {{if eq .Adversary.ChallengeRating "9"}}selected{{end}}>9</option>
+                            <option value="10" {{if eq .Adversary.ChallengeRating "10"}}selected{{end}}>10</option>
+                            <option value="11" {{if eq .Adversary.ChallengeRating "11"}}selected{{end}}>11</option>
+                            <option value="12" {{if eq .Adversary.ChallengeRating "12"}}selected{{end}}>12</option>
+                            <option value="13" {{if eq .Adversary.ChallengeRating "13"}}selected{{end}}>13</option>
+                            <option value="14" {{if eq .Adversary.ChallengeRating "14"}}selected{{end}}>14</option>
+                            <option value="15" {{if eq .Adversary.ChallengeRating "15"}}selected{{end}}>15</option>
+                            <option value="16" {{if eq .Adversary.ChallengeRating "16"}}selected{{end}}>16</option>
+                            <option value="17" {{if eq .Adversary.ChallengeRating "17"}}selected{{end}}>17</option>
+                            <option value="18" {{if eq .Adversary.ChallengeRating "18"}}selected{{end}}>18</option>
+                            <option value="19" {{if eq .Adversary.ChallengeRating "19"}}selected{{end}}>19</option>
+                            <option value="20" {{if eq .Adversary.ChallengeRating "20"}}selected{{end}}>20</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="size" class="block text-sm font-medium text-gray-700 mb-1">Size</label>
+                        <select id="size" name="size" 
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                            required>
+                            <option value="" {{if eq .Adversary.Size ""}}selected{{end}}>Select Size</option>
+                            <option value="Tiny" {{if eq .Adversary.Size "Tiny"}}selected{{end}}>Tiny</option>
+                            <option value="Small" {{if eq .Adversary.Size "Small"}}selected{{end}}>Small</option>
+                            <option value="Medium" {{if eq .Adversary.Size "Medium"}}selected{{end}}>Medium</option>
+                            <option value="Large" {{if eq .Adversary.Size "Large"}}selected{{end}}>Large</option>
+                            <option value="Huge" {{if eq .Adversary.Size "Huge"}}selected{{end}}>Huge</option>
+                            <option value="Gargantuan" {{if eq .Adversary.Size "Gargantuan"}}selected{{end}}>Gargantuan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="speed" class="block text-sm font-medium text-gray-700 mb-1">Speed</label>
+                        <input type="text" id="speed" name="speed" value="{{.Adversary.Speed}}" placeholder="30 ft."
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                            required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="armor_class" class="block text-sm font-medium text-gray-700 mb-1">Armor Class</label>
+                        <input type="number" id="armor_class" name="armor_class" value="{{.Adversary.ArmorClass}}" min="0" 
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                            required>
+                    </div>
+                    <div>
+                        <label for="hit_points" class="block text-sm font-medium text-gray-700 mb-1">Hit Points</label>
+                        <input type="number" id="hit_points" name="hit_points" value="{{.Adversary.HitPoints}}" min="1" 
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                            required>
+                    </div>
+                </div>
+
+                <!-- Ability Scores -->
+                <div>
+                    <h3 class="text-lg font-medieval text-dh-red font-bold mb-3">Ability Scores</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <div>
+                            <label for="strength" class="block text-sm font-medium text-gray-700 mb-1">STR</label>
+                            <input type="number" id="strength" name="strength" value="{{.Adversary.Strength}}" min="1" max="30" 
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                                required>
+                        </div>
+                        <div>
+                            <label for="dexterity" class="block text-sm font-medium text-gray-700 mb-1">DEX</label>
+                            <input type="number" id="dexterity" name="dexterity" value="{{.Adversary.Dexterity}}" min="1" max="30" 
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                                required>
+                        </div>
+                        <div>
+                            <label for="constitution" class="block text-sm font-medium text-gray-700 mb-1">CON</label>
+                            <input type="number" id="constitution" name="constitution" value="{{.Adversary.Constitution}}" min="1" max="30" 
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                                required>
+                        </div>
+                        <div>
+                            <label for="intelligence" class="block text-sm font-medium text-gray-700 mb-1">INT</label>
+                            <input type="number" id="intelligence" name="intelligence" value="{{.Adversary.Intelligence}}" min="1" max="30" 
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                                required>
+                        </div>
+                        <div>
+                            <label for="wisdom" class="block text-sm font-medium text-gray-700 mb-1">WIS</label>
+                            <input type="number" id="wisdom" name="wisdom" value="{{.Adversary.Wisdom}}" min="1" max="30" 
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                                required>
+                        </div>
+                        <div>
+                            <label for="charisma" class="block text-sm font-medium text-gray-700 mb-1">CHA</label>
+                            <input type="number" id="charisma" name="charisma" value="{{.Adversary.Charisma}}" min="1" max="30" 
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50"
+                                required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea id="description" name="description" rows="4"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50">{{.Adversary.Description}}</textarea>
+                </div>
+
+                <!-- Abilities -->
+                <div>
+                    <label for="abilities" class="block text-sm font-medium text-gray-700 mb-1">Abilities</label>
+                    <textarea id="abilities" name="abilities" rows="4"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50">{{.Adversary.Abilities}}</textarea>
+                    <p class="mt-1 text-sm text-gray-500">Special abilities, traits, and features. One per line.</p>
+                </div>
+
+                <!-- Actions -->
+                <div>
+                    <label for="actions" class="block text-sm font-medium text-gray-700 mb-1">Actions</label>
+                    <textarea id="actions" name="actions" rows="4"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50">{{.Adversary.Actions}}</textarea>
+                    <p class="mt-1 text-sm text-gray-500">Combat actions. One per line.</p>
+                </div>
+
+                <!-- Reactions -->
+                <div>
+                    <label for="reactions" class="block text-sm font-medium text-gray-700 mb-1">Reactions</label>
+                    <textarea id="reactions" name="reactions" rows="4"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50">{{.Adversary.Reactions}}</textarea>
+                    <p class="mt-1 text-sm text-gray-500">Reaction abilities. One per line.</p>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-dh-red hover:bg-red-800 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                        {{if .IsNew}}Create Adversary{{else}}Update Adversary{{end}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{end}}

@@ -1,0 +1,153 @@
+{{define "content"}}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6 flex justify-between items-center">
+        <a href="/adversaries" class="text-dh-red hover:text-red-800 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            Back to Adversaries
+        </a>
+        <div class="space-x-2">
+            <a href="/adversaries/{{.Adversary.ID}}/edit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                Edit
+            </a>
+            <button 
+                hx-post="/adversaries/{{.Adversary.ID}}/delete"
+                hx-confirm="Are you sure you want to delete this adversary?"
+                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                Delete
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white bg-opacity-90 rounded-lg shadow-lg border-2 border-dh-brown overflow-hidden">
+        <!-- Header -->
+        <div class="bg-dh-dark text-dh-gold p-6 border-b-4 border-dh-gold">
+            <h2 class="text-3xl font-medieval font-bold">{{.Adversary.Name}}</h2>
+            <p class="mt-1">{{.Adversary.Size}} {{.Adversary.Type}}, Challenge Rating {{.Adversary.ChallengeRating}}</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="p-6">
+            <!-- Basic Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown">
+                    <h3 class="text-dh-red font-medieval text-lg font-bold mb-2">Armor Class</h3>
+                    <p class="text-2xl font-bold">{{.Adversary.ArmorClass}}</p>
+                </div>
+                <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown">
+                    <h3 class="text-dh-red font-medieval text-lg font-bold mb-2">Hit Points</h3>
+                    <p class="text-2xl font-bold">{{.Adversary.HitPoints}}</p>
+                </div>
+                <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown">
+                    <h3 class="text-dh-red font-medieval text-lg font-bold mb-2">Speed</h3>
+                    <p class="text-2xl font-bold">{{.Adversary.Speed}}</p>
+                </div>
+            </div>
+
+            <!-- Ability Scores -->
+            <div class="mb-8">
+                <h3 class="text-dh-red font-medieval text-xl font-bold mb-4">Ability Scores</h3>
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                    <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown text-center">
+                        <h4 class="font-bold mb-1">STR</h4>
+                        <p class="text-xl font-bold">{{.Adversary.Strength}}</p>
+                        <p class="text-sm">
+                            {{if gt .Adversary.Strength 10}}+{{end}}{{div (sub .Adversary.Strength 10) 2}}
+                        </p>
+                    </div>
+                    <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown text-center">
+                        <h4 class="font-bold mb-1">DEX</h4>
+                        <p class="text-xl font-bold">{{.Adversary.Dexterity}}</p>
+                        <p class="text-sm">
+                            {{if gt .Adversary.Dexterity 10}}+{{end}}{{div (sub .Adversary.Dexterity 10) 2}}
+                        </p>
+                    </div>
+                    <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown text-center">
+                        <h4 class="font-bold mb-1">CON</h4>
+                        <p class="text-xl font-bold">{{.Adversary.Constitution}}</p>
+                        <p class="text-sm">
+                            {{if gt .Adversary.Constitution 10}}+{{end}}{{div (sub .Adversary.Constitution 10) 2}}
+                        </p>
+                    </div>
+                    <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown text-center">
+                        <h4 class="font-bold mb-1">INT</h4>
+                        <p class="text-xl font-bold">{{.Adversary.Intelligence}}</p>
+                        <p class="text-sm">
+                            {{if gt .Adversary.Intelligence 10}}+{{end}}{{div (sub .Adversary.Intelligence 10) 2}}
+                        </p>
+                    </div>
+                    <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown text-center">
+                        <h4 class="font-bold mb-1">WIS</h4>
+                        <p class="text-xl font-bold">{{.Adversary.Wisdom}}</p>
+                        <p class="text-sm">
+                            {{if gt .Adversary.Wisdom 10}}+{{end}}{{div (sub .Adversary.Wisdom 10) 2}}
+                        </p>
+                    </div>
+                    <div class="bg-dh-parchment p-4 rounded-lg border border-dh-brown text-center">
+                        <h4 class="font-bold mb-1">CHA</h4>
+                        <p class="text-xl font-bold">{{.Adversary.Charisma}}</p>
+                        <p class="text-sm">
+                            {{if gt .Adversary.Charisma 10}}+{{end}}{{div (sub .Adversary.Charisma 10) 2}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            {{if .Adversary.Description}}
+            <div class="mb-8">
+                <h3 class="text-dh-red font-medieval text-xl font-bold mb-4">Description</h3>
+                <div class="bg-dh-parchment p-6 rounded-lg border border-dh-brown prose max-w-none">
+                    <p>{{.Adversary.Description}}</p>
+                </div>
+            </div>
+            {{end}}
+
+            <!-- Abilities -->
+            {{if .Adversary.Abilities}}
+            <div class="mb-8">
+                <h3 class="text-dh-red font-medieval text-xl font-bold mb-4">Abilities</h3>
+                <div class="bg-dh-parchment p-6 rounded-lg border border-dh-brown prose max-w-none">
+                    <p>{{.Adversary.Abilities}}</p>
+                </div>
+            </div>
+            {{end}}
+
+            <!-- Actions -->
+            {{if .Adversary.Actions}}
+            <div class="mb-8">
+                <h3 class="text-dh-red font-medieval text-xl font-bold mb-4">Actions</h3>
+                <div class="bg-dh-parchment p-6 rounded-lg border border-dh-brown prose max-w-none">
+                    <p>{{.Adversary.Actions}}</p>
+                </div>
+            </div>
+            {{end}}
+
+            <!-- Reactions -->
+            {{if .Adversary.Reactions}}
+            <div class="mb-8">
+                <h3 class="text-dh-red font-medieval text-xl font-bold mb-4">Reactions</h3>
+                <div class="bg-dh-parchment p-6 rounded-lg border border-dh-brown prose max-w-none">
+                    <p>{{.Adversary.Reactions}}</p>
+                </div>
+            </div>
+            {{end}}
+
+            <!-- Add to Encounter Button -->
+            <div class="mt-8 flex justify-center">
+                <button 
+                    class="bg-dh-dark hover:bg-gray-800 text-dh-gold font-bold py-3 px-6 rounded-lg transition-colors"
+                    hx-get="/encounters/add-adversary/{{.Adversary.ID}}"
+                    hx-target="#encounter-modal"
+                    hx-trigger="click">
+                    Add to Encounter
+                </button>
+            </div>
+
+            <!-- Modal placeholder for encounter selection -->
+            <div id="encounter-modal"></div>
+        </div>
+    </div>
+</div>
+{{end}}

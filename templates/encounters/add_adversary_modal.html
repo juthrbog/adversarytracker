@@ -1,0 +1,116 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="add-adversary-modal">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
+        <div class="bg-dh-dark text-dh-gold p-4 flex justify-between items-center">
+            <h3 class="text-xl font-medieval font-bold">Add {{.Adversary.Name}} to Encounter</h3>
+            <button 
+                class="text-dh-gold hover:text-white"
+                onclick="document.getElementById('add-adversary-modal').remove()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        
+        <div class="p-6">
+            <div class="mb-4">
+                <div class="flex items-center mb-2">
+                    <h4 class="font-bold text-lg">{{.Adversary.Name}}</h4>
+                    <span class="ml-2 text-sm text-gray-600">{{.Adversary.Size}} {{.Adversary.Type}}, CR {{.Adversary.ChallengeRating}}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                        <span class="font-bold">AC:</span> {{.Adversary.ArmorClass}}
+                    </div>
+                    <div>
+                        <span class="font-bold">HP:</span> {{.Adversary.HitPoints}}
+                    </div>
+                </div>
+            </div>
+            
+            {{if .Encounters}}
+            <form id="add-to-encounter-form" class="space-y-4">
+                <input type="hidden" name="adversary_id" value="{{.Adversary.ID}}">
+                
+                <div>
+                    <label for="encounter-select" class="block text-sm font-medium text-gray-700">Select Encounter</label>
+                    <select 
+                        id="encounter-select" 
+                        name="encounter_id" 
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50">
+                        {{range .Encounters}}
+                        <option value="{{.ID}}">{{.Name}}</option>
+                        {{end}}
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="count" class="block text-sm font-medium text-gray-700">Count</label>
+                    <input 
+                        type="number" 
+                        id="count" 
+                        name="count" 
+                        value="1" 
+                        min="1" 
+                        max="20"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-dh-red focus:ring focus:ring-dh-red focus:ring-opacity-50">
+                </div>
+                
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button 
+                        type="button" 
+                        onclick="document.getElementById('add-adversary-modal').remove()"
+                        class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-dh-red">
+                        Cancel
+                    </button>
+                    <button 
+                        type="button" 
+                        onclick="addAdversaryToEncounter()"
+                        class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-dh-red hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-dh-red">
+                        Add to Encounter
+                    </button>
+                </div>
+            </form>
+            
+            <script>
+                function addAdversaryToEncounter() {
+                    const form = document.getElementById('add-to-encounter-form');
+                    const encounterId = form.querySelector('[name="encounter_id"]').value;
+                    const adversaryId = form.querySelector('[name="adversary_id"]').value;
+                    const count = form.querySelector('[name="count"]').value;
+                    
+                    // Create a form to submit
+                    const submitForm = document.createElement('form');
+                    submitForm.method = 'POST';
+                    submitForm.action = `/encounters/${encounterId}/adversaries`;
+                    
+                    // Add the form fields
+                    const adversaryField = document.createElement('input');
+                    adversaryField.type = 'hidden';
+                    adversaryField.name = 'adversary_id';
+                    adversaryField.value = adversaryId;
+                    submitForm.appendChild(adversaryField);
+                    
+                    const countField = document.createElement('input');
+                    countField.type = 'hidden';
+                    countField.name = 'count';
+                    countField.value = count;
+                    submitForm.appendChild(countField);
+                    
+                    // Append to body and submit
+                    document.body.appendChild(submitForm);
+                    submitForm.submit();
+                }
+            </script>
+            {{else}}
+            <div class="text-center py-4">
+                <p class="mb-4">You don't have any encounters yet.</p>
+                <a 
+                    href="/encounters/new" 
+                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-dh-red hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-dh-red">
+                    Create New Encounter
+                </a>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</div>
